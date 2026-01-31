@@ -129,7 +129,7 @@ def test_policy_instantiation():
     # Verify pi05 model components exist
     # Check that time_mlp layers exist (for AdaRMS conditioning)
     assert hasattr(policy.model, "time_mlp_in"), "Missing time_mlp_in layer for pi05"
-    assert hasattr(policy.model, "time_mlp_out"), "Missing time_mlp_out layer for pi05"
+    assert hasattr(policy.model, "time_mlp_out"), "Missing time_mlp_out layer for 1111111
 
     # Check that action_time_mlp layers don't exist (pi0 only)
     assert not hasattr(policy.model, "action_time_mlp_in"), "action_time_mlp_in should not exist in pi05 mode"

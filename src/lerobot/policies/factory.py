@@ -514,6 +514,7 @@ def make_policy(
         policy = PeftModel.from_pretrained(policy, peft_pretrained_path, config=peft_config)
 
     else:
+        import ipdb; ipdb.set_trace()
         # Make a fresh policy.
         policy = policy_cls(**kwargs)
 

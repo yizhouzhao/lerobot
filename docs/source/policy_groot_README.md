@@ -1,27 +1,65 @@
-## Research Paper
+# Policy Repo for GR00T-N1.6
 
-Paper: https://research.nvidia.com/labs/gear/gr00t-n1_5/
+## 1. Installation guide
 
-## Repository
+Install astral [uv](https://docs.astral.sh/uv/) and start a new env
 
-Code: https://github.com/NVIDIA/Isaac-GR00T
-
-## Citation
-
-```bibtex
-@inproceedings{gr00tn1_2025,
-  archivePrefix = {arxiv},
-  eprint     = {2503.14734},
-  title      = {{GR00T} {N1}: An Open Foundation Model for Generalist Humanoid Robots},
-  author     = {NVIDIA and Johan Bjorck andFernando Castañeda, Nikita Cherniadev and Xingye Da and Runyu Ding and Linxi "Jim" Fan and Yu Fang and Dieter Fox and Fengyuan Hu and Spencer Huang and Joel Jang and Zhenyu Jiang and Jan Kautz and Kaushil Kundalia and Lawrence Lao and Zhiqi Li and Zongyu Lin and Kevin Lin and Guilin Liu and Edith Llontop and Loic Magne and Ajay Mandlekar and Avnish Narayan and Soroush Nasiriany and Scott Reed and You Liang Tan and Guanzhi Wang and Zu Wang and Jing Wang and Qi Wang and Jiannan Xiang and Yuqi Xie and Yinzhen Xu and Zhenjia Xu and Seonghyeon Ye and Zhiding Yu and Ao Zhang and Hao Zhang and Yizhou Zhao and Ruijie Zheng and Yuke Zhu},
-  month      = {March},
-  year       = {2025},
-  booktitle  = {ArXiv Preprint},
-}
+```
+uv venv --python=3.10
+source .venv/bin/activate
 ```
 
-## Additional Resources
+Install pip and wheel
+```
+uv pip install -U pip wheel
+```
 
-Blog: https://developer.nvidia.com/isaac/gr00t
+Install repo:
 
-Hugging Face Model: https://huggingface.co/nvidia/GR00T-N1.5-3B
+```bash
+# Check https://pytorch.org/get-started/locally/ for your system
+uv pip install torch==2.7.1 torchvision==0.22.1 torchaudio==2.7.1 --index-url https://download.pytorch.org/whl/cu128
+
+# Flash attention dependencies
+uv pip install ninja "packaging>=24.2,<26.0"
+
+# Install flash attention (requires CUDA)
+uv pip install "flash-attn>=2.5.9,<3.0.0" --no-build-isolation
+
+# Verify installation
+python -c "import flash_attn; print(f'Flash Attention {flash_attn.__version__} imported successfully')"
+```
+
+<!-- Install LeRobot with Groot Dependencies
+
+```bash
+uv pip install -e ".[groot]"
+``` -->
+
+Install Additional N1.6 Dependencies
+
+```bash
+uv pip install lerobot[transformers-dep]
+# uv pip install lmdb==1.7.5
+# uv pip install albumentations==1.4.18
+# uv pip install "faker>=33.0.0,<35.0.0"
+# uv pip install tyro
+# uv pip install "matplotlib>=3.10.3,<4.0.0"
+# uv pip install torchcodec==0.4.0
+```
+
+Install system ffmpeg
+
+```bash
+sudo apt-get update
+sudo apt-get install -y ffmpeg
+
+# verify
+python -c "import torch, torchcodec; print('torch', torch.__version__); print('torchcodec', torchcodec.__version__)"
+```
+
+## 2.Launch Training
+```
+lerobot-train   --policy.type=gr00t_n1d6   --policy.push_to_hub=false   --dataset.repo_id=izuluaga/finish_sandwich   --batch_size=2   --steps=200   --wandb.enable=false   --log_freq=2   --output_dir=./outputs/groot/  --num_workers=0
+``
+

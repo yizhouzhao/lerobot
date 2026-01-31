@@ -217,6 +217,7 @@ def train(cfg: TrainPipelineConfig, accelerator: Accelerator | None = None):
 
     accelerator.wait_for_everyone()
 
+
     # Now all other processes can safely load the dataset
     if not is_main_process:
         dataset = make_dataset(cfg)
@@ -231,6 +232,8 @@ def train(cfg: TrainPipelineConfig, accelerator: Accelerator | None = None):
 
     if is_main_process:
         logging.info("Creating policy")
+
+    import ipdb; ipdb.set_trace()
     policy = make_policy(
         cfg=cfg.policy,
         ds_meta=dataset.meta,
